@@ -19,7 +19,7 @@ const Navbar = () => {
                 {/* Right side */}
                 <Flex gap={3} alignItems={"center"}>
                     <Text fontSize={"lg"} fontWeight={500} display={{base: "none", md: "block"}}>
-                        BFF ship 🔥 
+                    🔥 Taking note to organize your life better 🔥 
                     </Text>
                     <Button onClick={toggleColorMode}>
                         {colorMode === "light" ? <IoMoon /> : <LuSun size={20} />}

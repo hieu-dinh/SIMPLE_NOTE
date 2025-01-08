@@ -1,4 +1,4 @@
-import { Grid } from '@chakra-ui/react'
+import { Flex, Grid, Spinner, Text } from '@chakra-ui/react'
 import Notecard from './Notecard'
 import { useEffect, useState } from 'react';
 
@@ -23,18 +23,35 @@ const NoteGrid = ({notes, setNotes}) => {
     getNotes();
   }, []);  
   return (
-    <Grid
-    templateColumns={{
-    base: "1fr",
-    md: "repeat(2, 1fr)",
-    lg: "repeat(3, 1fr)",
-  }}
-  gap={4}
-  >
-    {notes.map((note) => (
-      <Notecard key={note.id} note={note} />
-    ))}  
-  </Grid>
+    <>
+      <Grid
+        templateColumns={{
+        base: "1fr",
+        md: "repeat(2, 1fr)",
+        lg: "repeat(3, 1fr)",
+      }}
+      gap={4}
+      >
+      {notes.map((note) => (
+        <Notecard key={note.id} note={note} />
+      ))}  
+      </Grid>
+      {isLoading && (
+        <Flex justifyContent={"center"}>
+        <Spinner size={"xl"} />
+        </Flex>
+      )}
+      {!isLoading && notes.length === 0 && (
+        <Flex justifyContent={"center"}>
+          <Text fontsize={"xl"}>
+            <Text as={"span"} fontsize={"2x1"} fontWeight={"bold"} mr={2}>
+              Let Create a some Note Today!
+            </Text>
+              No Notes have been found
+          </Text>
+        </Flex>
+      )}
+    </>
   );
 };
 export default NoteGrid
