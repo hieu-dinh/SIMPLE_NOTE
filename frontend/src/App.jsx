@@ -1,11 +1,13 @@
 import { Container, Stack, Text } from "@chakra-ui/react";
 import Navbar from "./components/Navbar";
 import NoteGrid from "./components/NoteGrid";
+import { useState } from "react";
 
 function App() {
+  const [notes, setNotes] = useState([]);
   return (
     <Stack minH={"100vh"}>
-      <Navbar />
+      <Navbar setNotes={setNotes} />
 
       <Container maxW={"1200px"} my={4}>
         <Text
@@ -20,7 +22,7 @@ function App() {
             My Notes</Text>
           🚀
         </Text>
-        <NoteGrid />
+        <NoteGrid notes={notes} setNotes={setNotes} />
       </Container>
     </Stack>
   )
