@@ -20,9 +20,10 @@ def create_note():
                 return jsonify({"error":f"Missing required field: {field}"}), 400
         title = data.get("title")
         content = data.get("content")
+        date = data.get("date")
         #fetching the random image url from the api
         img_url = "https://avatar.iran.liara.run/public"
-        new_note = Note(title=title, content=content, img_url=img_url)
+        new_note = Note(title=title, content=content, img_url=img_url, date=date)
         db.session.add(new_note)
         db.session.commit()
         return jsonify({"msg":"Note created successfully"}), 201
@@ -54,6 +55,7 @@ def update_note(id):
         data = request.json
         note.title = data.get("title", note.title)
         note.content = data.get("content", note.content)
+        note.date = data.get("date", note.date)
         db.session.commit()
         return jsonify(note.to_json()), 200
     except Exception as e:
