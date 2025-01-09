@@ -46,7 +46,10 @@ const Notecard = ( { note, setNotes }) => {
             </Flex>
             {/* Right */}
             <Flex>
-                <EditModal />
+                <EditModal 
+                    notes={note}
+                    setNotes={setNotes}
+                />
                 <IconButton
                     variant={"ghost"}
                     colorScheme='red'

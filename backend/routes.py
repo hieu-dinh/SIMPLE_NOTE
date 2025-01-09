@@ -14,10 +14,13 @@ def get_notes():
 def create_note():
     try:
         data = request.json
-        required_fields = ["title"]
+        
+        #Validation
+        required_fields = ["title","date","content"]
         for field in required_fields:
-            if field not in data:
+            if field not in data or not data.get(field):
                 return jsonify({"error":f"Missing required field: {field}"}), 400
+        
         title = data.get("title")
         content = data.get("content")
         date = data.get("date")
@@ -61,5 +64,3 @@ def update_note(id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error":str(e)}), 500
-    ## changes test to push to github
-    ### test again

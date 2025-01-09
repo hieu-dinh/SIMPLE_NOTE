@@ -1,8 +1,57 @@
-import { Button, Flex, FormControl, FormLabel, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, RadioGroup, Textarea, useDisclosure } from "@chakra-ui/react"
+import { Button, Flex, FormControl, FormLabel, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, RadioGroup, Textarea, useDisclosure, useToast } from "@chakra-ui/react"
+import { useState } from "react";
 import { BiEditAlt } from "react-icons/bi"
+import { BASE_URL } from "../App";
 
-function EditModal() {
+function EditModal( {setNotes, notes} ) {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [ isLoading, setIsLoading ] = useState(false);
+    const [ inputs, setInputs ] = useState({
+        title: notes.title,
+        date: notes.date,
+        content: notes.content,
+        category: notes.category
+    })
+    const toast = useToast();
+    const handleEditUser = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+        try {
+            const res = await fetch(BASE_URL + "/notes/" + notes.id, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(inputs)
+            })
+            const data = await res.json();
+            if (!res.ok) {
+                throw new Error(data.error);
+            }
+            setNotes((prevNotes) => prevNotes.map((n) => (n.id === notes.id ? data : n)));
+            toast({
+                title: "Yayy!!! 🎉",
+                description: "Your note has been updated successfully.",
+                status: "success",
+                duration: 3000,
+                position: "top-center",
+                isCloseable: true
+            });
+            onClose()
+        } catch (error) {
+            toast({
+                status: "error",
+                title: "An error occurred.",
+                description: error.message,
+                duration: 4000,
+                position: "top-center",
+                isCloseable: true
+            })
+        }   finally {
+                setIsLoading(false);
+            }   
+    };
+
     return (
     <>
         <IconButton
@@ -15,6 +64,7 @@ function EditModal() {
  		/>
         <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
+            <form onSubmit={handleEditUser}>
             <ModalContent>
                 <ModalHeader>Update Note</ModalHeader>
                 <ModalCloseButton />
@@ -23,12 +73,18 @@ function EditModal() {
                             {/* Left */}
                             <FormControl>
                                 <FormLabel>Note Title</FormLabel>
-                                <Input placeholder="Input note title here" />
+                                <Input placeholder="Input note title here"
+                                    value={inputs.title}
+                                    onChange={(e) => setInputs((prev) => ({ ...prev, title: e.target.value}))}
+                                />
                             </FormControl>
                             {/* Right */}
                             <FormControl>
                                 <FormLabel>Due Date</FormLabel>
-                                <Input placeholder="Input due date here" />
+                                <Input placeholder="Input due date here"
+                                    value={inputs.date}
+                                    onChange={(e) => setInputs((prev) => ({ ...prev, date: e.target.value}))}
+                                />
                             </FormControl>
                         </Flex>
                         <FormControl mt={4}>
@@ -37,6 +93,8 @@ function EditModal() {
                                     resize={"none"}
                                     overflow={"hidden"}
                                     placeholder="Input note content here"
+                                    value={inputs.content}
+                                    onChange={(e) => setInputs((prev) => ({ ...prev, content: e.target.value}))}
                                 />
                         </FormControl>
                         <RadioGroup defaultValue="personal" mt={4}>
@@ -47,10 +105,11 @@ function EditModal() {
                         </RadioGroup>
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme="blue" mr={3}>Update</Button>
+                        <Button colorScheme="blue" mr={3} type='submit' isLoading={isLoading}>Update</Button>
                         <Button onClick={onClose}>Cancel</Button>
                     </ModalFooter>
             </ModalContent>
+            </form>
         </Modal>
       </>
     );

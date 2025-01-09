@@ -40,6 +40,12 @@ const CreateUserModal = ({ setNotes }) => {
             });
             onClose();
             setNotes((prevNotes) => [...prevNotes, data]);
+            setInputs({
+                title: "",
+                content: "",
+                date: "",
+                category: "",
+            }); // clear inputs
         } catch (error) {
             toast({
                 status: "error",
@@ -51,12 +57,6 @@ const CreateUserModal = ({ setNotes }) => {
             });
         } finally {
             setIsLoading(false);
-            setInputs({
-                title: "",
-                content: "",
-                date: "",
-                category: "",
-            }); // clear inputs
         }
     };
   
@@ -99,7 +99,7 @@ const CreateUserModal = ({ setNotes }) => {
                                 onChange={(e) => setInputs({...inputs, content: e.target.value})}
                             />
                     </FormControl>
-                    <RadioGroup defaultValue="personal" mt={4}>
+                    <RadioGroup mt={4}>
                         <Flex gap={5}>
                             <Radio value="personal"
                                 onChange={(e) => setInputs({...inputs, category: e.target.value})}
