@@ -26,7 +26,7 @@ def create_note():
         new_note = Note(title=title, content=content, img_url=img_url, date=date)
         db.session.add(new_note)
         db.session.commit()
-        return jsonify({"msg":"Note created successfully"}), 201
+        return jsonify(new_note.to_json()), 201
     except Exception as e:
         db.session.rollback()
         return jsonify({"error":str(e)}), 500

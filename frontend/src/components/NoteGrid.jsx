@@ -1,13 +1,14 @@
 import { Flex, Grid, Spinner, Text } from '@chakra-ui/react'
 import Notecard from './Notecard'
 import { useEffect, useState } from 'react';
+import { BASE_URL } from '../App';
 
 const NoteGrid = ({notes, setNotes}) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const getNotes = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/notes");
+        const res = await fetch( BASE_URL + "/notes");
         const data = await res.json();
 
         if(!res.ok) {
@@ -21,7 +22,9 @@ const NoteGrid = ({notes, setNotes}) => {
       }
     }
     getNotes();
-  }, []);  
+  }, []);
+
+  console.log(notes);
   return (
     <>
       <Grid
@@ -33,21 +36,21 @@ const NoteGrid = ({notes, setNotes}) => {
       gap={4}
       >
       {notes.map((note) => (
-        <Notecard key={note.id} note={note} />
+        <Notecard key={note.id} note={note} setNotes={setNotes} />
       ))}  
       </Grid>
       {isLoading && (
         <Flex justifyContent={"center"}>
-        <Spinner size={"xl"} />
+          <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='xl'/>
         </Flex>
       )}
       {!isLoading && notes.length === 0 && (
         <Flex justifyContent={"center"}>
-          <Text fontsize={"xl"}>
-            <Text as={"span"} fontsize={"2x1"} fontWeight={"bold"} mr={2}>
+          <Text fontSize={"xl"}>
+            <Text as={"span"} fontSize={"2xl"} fontWeight={"bold"} mr={2}>
               Let Create a some Note Today!
             </Text>
-              No Notes have been found
+              No notes have been found.
           </Text>
         </Flex>
       )}
