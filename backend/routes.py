@@ -1,6 +1,7 @@
 from app import app, db
 from flask import request, jsonify
 from models import Note
+import random
 
 # Get all notes
 @app.route("/api/notes", methods=["GET"])
@@ -24,9 +25,15 @@ def create_note():
         title = data.get("title")
         content = data.get("content")
         date = data.get("date")
-        #fetching the random image url from the api
-        img_url = "https://avatar.iran.liara.run/public"
         category = data.get("category")
+        
+        if category == "personal":
+            img_url = f"/personal-icon/{random.randint(1, 10)}.png"
+        elif category == "work":
+            img_url = f"/work-icon/{random.randint(1, 10)}.png"
+        else:
+            img_url = None
+        
         new_note = Note(title=title, content=content, img_url=img_url, date=date, category=category)
         db.session.add(new_note)
         db.session.commit()

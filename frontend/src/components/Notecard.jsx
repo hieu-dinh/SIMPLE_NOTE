@@ -38,7 +38,8 @@ const Notecard = ( { note, setNotes }) => {
         <Flex gap={4}>
             {/* Left */}
             <Flex flex={1} gap={4} alignItems={"center"}>
-                <Avatar src={"https://avatar.iran.liara.run/public"} />
+            <Avatar src={note.imgurl} />
+            {/* <img src={note.imgurl} alt="Example Image"/> */}
                 <Box>
                     <Heading size="sm">{note.title} <i>({note.category})</i></Heading>
                     <Text>{note.date}</Text>
