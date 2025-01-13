@@ -101,11 +101,9 @@ const CreateUserModal = ({ setNotes }) => {
                     </FormControl>
                     <RadioGroup mt={4}>
                         <Flex gap={5}>
-                            <Radio value="personal"
-                                onChange={(e) => setInputs({...inputs, category: e.target.value})}
+                            <Radio value="personal" onChange={(e) => setInputs({ ...inputs, category: e.target.value })}
                             >Personal</Radio>
-                            <Radio value="work"
-                                onChange={(e) => setInputs({...inputs, category: e.target.value})}
+                            <Radio value="work" onChange={(e) => setInputs({ ...inputs, category: e.target.value })}
                             >Work</Radio>
                         </Flex>
                     </RadioGroup>

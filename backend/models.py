@@ -6,6 +6,7 @@ class Note(db.Model):
     date = db.Column(db.String(50), nullable=False)
     content = db.Column(db.Text, nullable=True)
     img_url = db.Column(db.String(200), nullable=True)
+    category = db.Column(db.String(10), nullable=False)
 
     def to_json(self):
         return {
@@ -13,5 +14,6 @@ class Note(db.Model):
             "title": self.title,
             "date": self.date,
             "content": self.content,
-            "imgurl": self.img_url
+            "imgurl": self.img_url,
+            "category": self.category
         }

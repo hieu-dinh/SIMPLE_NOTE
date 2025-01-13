@@ -26,7 +26,8 @@ def create_note():
         date = data.get("date")
         #fetching the random image url from the api
         img_url = "https://avatar.iran.liara.run/public"
-        new_note = Note(title=title, content=content, img_url=img_url, date=date)
+        category = data.get("category")
+        new_note = Note(title=title, content=content, img_url=img_url, date=date, category=category)
         db.session.add(new_note)
         db.session.commit()
         return jsonify(new_note.to_json()), 201
@@ -59,6 +60,7 @@ def update_note(id):
         note.title = data.get("title", note.title)
         note.content = data.get("content", note.content)
         note.date = data.get("date", note.date)
+        note.category = data.get("category", note.category)
         db.session.commit()
         return jsonify(note.to_json()), 200
     except Exception as e:

@@ -97,12 +97,15 @@ function EditModal( {setNotes, notes} ) {
                                     onChange={(e) => setInputs((prev) => ({ ...prev, content: e.target.value}))}
                                 />
                         </FormControl>
-                        <RadioGroup defaultValue="personal" mt={4}>
-                            <Flex gap={5}>
-                                <Radio value="personal">Personal</Radio>
-                                <Radio value="work">Work</Radio>
-                            </Flex>
-                        </RadioGroup>
+                        <RadioGroup
+                            mt={4}
+                            value={inputs.category}
+                            onChange={(value) => {setInputs((prev) => ({ ...prev, category: value}))}}>
+                        <Flex gap={5}>
+                            <Radio value="personal">Personal</Radio>
+                            <Radio value="work" >Work</Radio>
+                        </Flex>
+                    </RadioGroup>
                     </ModalBody>
                     <ModalFooter>
                         <Button colorScheme="blue" mr={3} type='submit' isLoading={isLoading}>Update</Button>
@@ -114,4 +117,5 @@ function EditModal( {setNotes, notes} ) {
       </>
     );
     }
+
 export default EditModal
