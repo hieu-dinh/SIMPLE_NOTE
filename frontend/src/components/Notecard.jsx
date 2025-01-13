@@ -23,7 +23,7 @@ const Notecard = ( { note, setNotes }) => {
                 isCloseable: true
             })
         } catch (error) {
-            toast({
+            Toast({
                 title: "An error occurred.",
                 description: error.message,
                 status: "error",
