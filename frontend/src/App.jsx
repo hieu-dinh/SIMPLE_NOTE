@@ -2,9 +2,10 @@ import { Container, Stack, Text } from "@chakra-ui/react";
 import Navbar from "./components/Navbar";
 import NoteGrid from "./components/NoteGrid";
 import { useState } from "react";
+import { BASE_URL } from "./constants";
 
-export const BASE_URL = "http://localhost:5000/api";
-
+console.log("BASE_URL:", BASE_URL);
+console.log("window.env:", window.env);
 function App() {
   const [notes, setNotes] = useState([]);
   return (
@@ -20,7 +21,7 @@ function App() {
         mb={8}
         >
           <Text as={"span"} bgGradient={"linear(to-r, cyan.400, blue.500)"} bgClip={"text"}>
-            My Notes</Text>
+            This is Hieu&apos;s personal pinboard</Text>
           🚀
         </Text>
         <NoteGrid notes={notes} setNotes={setNotes} />
@@ -28,5 +29,4 @@ function App() {
     </Stack>
   )
 }
-
 export default App

@@ -1,7 +1,7 @@
 import { Avatar, Box, Card, CardBody, CardHeader, Flex, Heading, IconButton, Text, useToast } from '@chakra-ui/react'
 import { BiTrash } from 'react-icons/bi'
 import EditModal from './EditModal'
-import { BASE_URL } from '../App';
+import { BASE_URL } from "../constants";
 
 const Notecard = ( { note, setNotes }) => {
     const Toast = useToast();

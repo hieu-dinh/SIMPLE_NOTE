@@ -1,7 +1,7 @@
 import { Flex, Grid, Spinner, Text } from '@chakra-ui/react'
 import Notecard from './Notecard'
 import { useEffect, useState } from 'react';
-import { BASE_URL } from '../App';
+import { BASE_URL } from "../constants";
 
 const NoteGrid = ({notes, setNotes}) => {
   const [isLoading, setIsLoading] = useState(true);

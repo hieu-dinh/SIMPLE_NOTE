@@ -1,2 +1,76 @@
-next deploy on render,
-check how to deploy on docker using nginx
+Issues:
+VITE and Runtime Variables:
+
+If you're passing VITE_BACKEND_URL as an environment variable during container runtime, it won’t work directly because Vite reads environment variables at build time, not runtime.
+This means the VITE_BACKEND_URL you set during docker run won’t affect the already built app in the image.
+Nginx Needs to Serve the Variable:
+
+If your app is built with Vite, the backend URL is baked into the build during npm run build. To make it dynamic at runtime, you need a workaround, such as serving the variable through Nginx or a JavaScript file.
+Solution: Use Nginx to Inject Environment Variables
+Here’s how to adjust your Docker setup to make the BASE_URL dynamic:
+
+1. Modify Nginx Configuration
+Update your nginx.conf to serve environment variables. Add this block to include a runtime JS file:
+
+nginx
+Copy
+Edit
+server {
+    listen 80;
+    server_name localhost;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location / {
+        try_files $uri /index.html;
+    }
+
+    location /env.js {
+        default_type application/javascript;
+        return 200 "window.env = { VITE_BACKEND_URL: '$VITE_BACKEND_URL' };\n";
+    }
+
+    error_page 404 /index.html;
+}
+2. Update React Code
+Adjust your React app to read the VITE_BACKEND_URL from the runtime env.js file:
+
+javascript
+Copy
+Edit
+const getBackendUrl = () => {
+  if (window.env && window.env.VITE_BACKEND_URL) {
+    return window.env.VITE_BACKEND_URL;
+  }
+  return "http://localhost:5000/api"; // Fallback
+};
+
+export const BASE_URL = getBackendUrl();
+3. Build and Use the Docker Image
+Build your Docker image:
+
+bash
+Copy
+Edit
+docker build -t simple_note/frontend .
+Run the container, passing the VITE_BACKEND_URL:
+
+bash
+Copy
+Edit
+docker run -d -p 3000:80 -e VITE_BACKEND_URL="http://127.0.0.1:5000/api" --name frontend simple_note/frontend
+The VITE_BACKEND_URL is now injected dynamically into the env.js file when the app runs.
+Alternative Solution (if Build-Time is Acceptable)
+If runtime configurability is not strictly required, you can set the VITE_BACKEND_URL during the build process:
+
+Docker Command for Build-Time Variable:
+bash
+Copy
+Edit
+docker build --build-arg VITE_BACKEND_URL="http://127.0.0.1:5000/api" -t simple_note/frontend .
+This approach bakes the URL into the app during the build process. However, you lose runtime flexibility.
+
+Final Thoughts
+Use Solution 1 if you need runtime flexibility (most common for containerized apps).
+Use Solution 2 if your backend URL won’t change after the app is built.

@@ -1,7 +1,7 @@
 import { Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, RadioGroup, Textarea, useDisclosure, useToast } from "@chakra-ui/react"
 import { useState } from "react";
-import { BiAddToQueue } from "react-icons/bi"
-import { BASE_URL } from "../App";
+import { BiAddToQueue } from "react-icons/bi";
+import { BASE_URL } from "../constants";
 
 const CreateUserModal = ({ setNotes }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()

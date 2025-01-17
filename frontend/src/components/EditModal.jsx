@@ -1,7 +1,7 @@
 import { Button, Flex, FormControl, FormLabel, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, RadioGroup, Textarea, useDisclosure, useToast } from "@chakra-ui/react"
 import { useState } from "react";
 import { BiEditAlt } from "react-icons/bi"
-import { BASE_URL } from "../App";
+import { BASE_URL } from "../constants";
 
 function EditModal( {setNotes, notes} ) {
     const { isOpen, onOpen, onClose } = useDisclosure();

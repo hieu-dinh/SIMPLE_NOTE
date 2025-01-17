@@ -64,10 +64,19 @@ def update_note(id):
         if note is None:
             return jsonify({"error":"Note not found"}), 404
         data = request.json
+        
         note.title = data.get("title", note.title)
         note.content = data.get("content", note.content)
         note.date = data.get("date", note.date)
         note.category = data.get("category", note.category)
+
+        if note.category == "personal":
+            note.img_url = f"/personal-icon/{random.randint(1, 10)}.png"
+        elif note.category == "work":
+            note.img_url = f"/work-icon/{random.randint(1, 10)}.png"
+        else:
+            note.img_url = None
+
         db.session.commit()
         return jsonify(note.to_json()), 200
     except Exception as e:
